@@ -9,7 +9,7 @@ In this demo, we are building an App that allows you to create a Todo list that 
 
 The below diagram shows the architecture of the App - A react front-end utilizes AppSync graphql server to create, read, delete items to a DynamoDB database. We also have an integration with Amazon Rekognition which provides Computer Vision capabilities to detect objects in images that are used as labels to create the shopping list items. 
 
-![Shopping List Architecture](public/Todo-Architecture.png)
+![Todo List Architecture](public/Todo-Architecture.png)
 
 ## Get Started by cloning the repo
 
@@ -92,9 +92,15 @@ Hub is a lightweight implementation of Publisher-Subscriber pattern, and is used
 
 Enable sign out functionality in `src/components/Navbar.js` by un-commenting relevant code. We will be doing it by importing the Auth module `import { Auth } from 'aws-amplify';` and then adding `await Auth.signOut();` on click of the logout button.  
 
-## Add the backend database and an API to interact with the DB
+## Add the backend database 
 
-The backend will consist of a dynamodb database and a graphql API that integrates with DynamoDb. We will use Amplify to create the necessary infrastructure. 
+
+## Add the necessary functions
+
+
+## Add an API to interact with the DB
+
+We will use Amplify to create a REST API using API gateway
 
 **Add the api and backend to the app using the command**
 
@@ -103,143 +109,29 @@ The backend will consist of a dynamodb database and a graphql API that integrate
 **Follow the steps below for inputs**
 
 ```
-Select GraphQL
-Provide API Name:[default]
-Choose the default authorization type for the API:Amazon Cognito User Pool 
-Do you have an annotated GraphQL schema? N
-Choose a schema template: Single object with fields
+Select REST
+Provide API Name:todorestapi
+
 ```
 The above will ceate the necessary Cloudformation scripts locally to create AppSync GraphQL infrastructure. Edit the Todo Schema and replace the same to ShoppingListItem below. 
-
-```graphql
-type ShoppingListItem @model @auth(rules: [{ allow: owner }]) {
-  id: ID!
-  itemName: String!
-}
-```
 
 
 To deploy the infrastructure to the backend run
 
 `amplify push`
 
-Use the following inputs 
+// Todo
 
-```bash
-
-? Do you want to generate code for your newly created GraphQL API Yes
-? Choose the code generation language target javascript
-? Enter the file name pattern of graphql queries, mutations and subscriptions src/graphql/**/*.js
-? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptio
-ns Yes
-? Enter maximum statement depth [increase from default if your schema is deeply nested] 2
-
-```
 **Integrate the API to front-end**
 
 Now we will have the necessary infrasttucture to integrate our front end code. We will also be able to import the generate graphql queries and mutations for easy integration into AppSync. Since we need to have a way to identify a user with each item, we will also use the Auth library. Import the libraries and add necessary code for integration in api/db.js file.
 
 ```javascript
-    import { Auth, API } from "aws-amplify";
-    import * as mutations from '../graphql/mutations';
-    import * as queries from '../graphql/queries';
-
-    // This function is called immediately when the page loads, before populating the table with this data
-    export async function getUserItems() {
-
-        let user = await Auth.currentAuthenticatedUser();
-        if(!user) // return empty list if not logged in
-            return [];
-        
-        let shopList = await API.graphql({ query: queries.listShoppingListItems});
-        console.log(shopList.data)
-        return shopList.data.listShoppingListItems.items
-        
-    }
-
-    // This function is called when a user clicks the button 'Add'
-    export async function addItem(itemName) {
     
-        // create json input for GraphQL
-        let itemDetails = {
-            itemName: itemName,
-        };
-
-        let addedItem = await API.graphql({ query: mutations.createShoppingListItem, variables: {input: itemDetails}});
-        console.log("Added ", addedItem)
-        return addedItem.data.createShoppingListItem;
-        
-    }
-
-    // This function is called when a user deletes an existing item in the table
-    export async function deleteItem(itemId) {
-
-        console.log("Deleting ", itemId)
-        let itemDetails = {
-            id: itemId
-        };
-
-        let deletedItem = await API.graphql({ query: mutations.deleteShoppingListItem, variables: {input: itemDetails}});
-        console.log("Deleted ", deletedItem)
-        return deletedItem;
-    }
 
 ```
 You should now be able to see the add, list and delete features working in the front end. 
 
-## Add Intelligence by integrating with Amazon Rekognition
-
-We will now see how we can interface with Amazon Rekognition to easily add object detetions and use an image to create a list of items that can be easily added to our shopping list. 
-
-**Add Rekognition backend by using the Predictions category**
-
-Amplify provided predictions category allows us to quickly integrate Amazon AI services to oour front ends. To add object recognition start by adding tha backednd using 
-
-`amplify add predictions`
-
-Use the following inputs 
-
-```
-Select the Identify category
-? What would you like to identify? Identify Labels
-? Provide a friendly name for your resource: 
-? Would you like use the default configuration? Default Configuration
-? Who should have access? Auth users only
-```
- Run `amplify push` to create the necessary backend infrastructure
-
- **Integrate Predictions to the front end**
-
- To enable the predictions category we need to add a Predictions provider to the Amplify and allow it to use the configuration with aws_exports. 
-
- Import the provider (in the index.js file)
-
- `import { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';`
-
- .. and add the provider as an Amplify pluggable component
-
- `Amplify.addPluggable(new AmazonAIPredictionsProvider());`
-
- Now update the api/predictions.js file with the following
-
- ```javascript
-    import { Predictions } from 'aws-amplify';
-    export const getLabelsFromImage = async(file) => {
-        const predictions = await Predictions.identify({
-            labels: {
-                source: {
-                    file,
-                },
-                type: "ALL"
-            }
-        })
-
-        return predictions.labels.map(item => {
-            return item.name
-        })
-    }
- ```
- You should now be able to pick an image, recognize objects within and add those into your shopping list !!
 
  ## Add Hosting
 
