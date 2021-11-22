@@ -23,8 +23,34 @@ import { getUserItems, deleteItem, addItem } from './api/db'
 import TableCard from './components/TableCard'
 import NavBar from './components/NavBar'
 import AddItemCard from './components/AddItemCard'
-// import { Hub } from 'aws-amplify';
 import { Grid } from '@material-ui/core'
+
+import { Amplify, Hub } from 'aws-amplify';
+import config from './aws-exports';
+import { BackendStack } from "./cdk-exports.json"
+
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+
+
+const cdkConfig = {
+  API: {
+    endpoints: [
+      {
+        name: BackendStack.AirqualityApiName,
+        endpoint: BackendStack.AirqualityApiEndpoint
+      }
+    ]
+  }, 
+  aws_cognito_region: BackendStack.awscognitoregion,
+  aws_user_pools_id:  BackendStack.userpool,
+  aws_user_pools_web_client_id: BackendStack.webclientid,
+  aws_cognito_identity_pool_id: BackendStack.identitypool,
+}
+
+
+Amplify.configure(config);
+Amplify.configure(cdkConfig);
 
 
 function App() {
@@ -40,15 +66,19 @@ function App() {
     setItems(await getUserItems())
   }
   
-  /*
+  
   Hub.listen('auth', (data) => {
     if (data.payload.event === 'signIn') {
       fetchData()
     }
   });
-  */
+  
 
   return (
+    <Authenticator signUpAttributes={[
+      'email',
+    ]}>
+    {({ signOut, user }) => (  
     <div className="app">
       <NavBar />
       
@@ -80,6 +110,8 @@ function App() {
         </Grid>
       </div>
     </div>
+    )}
+    </Authenticator>
   );
 }
 
