@@ -20,7 +20,7 @@ import React, { useState } from 'react';
 import '../App.css';
 import { TextField, Button, Grid, Paper } from '@material-ui/core';
 
-const NavBar = ({
+const AddItemCard = ({
   addAction
 }) => {
 
@@ -55,4 +55,4 @@ const NavBar = ({
   )
 }
 
-export default NavBar
+export default AddItemCard

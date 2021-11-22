@@ -16,6 +16,8 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import { API, Auth } from 'aws-amplify'
+
 // This function is called immediately when the page loads, before populating the table with this data
 export async function getUserItems() {
     return []
@@ -23,7 +25,31 @@ export async function getUserItems() {
 
 // This function is called when a user clicks the button 'Add'
 export async function addItem(itemName) {
-    
+    console.log("Adding item ", itemName);
+    const user = await Auth.currentUserInfo()
+    const userName = user.userName;
+
+    const apiName = 'todolist-todoApi';
+    const path = '/todos'; 
+    const myInit = { // OPTIONAL
+        headers: {}, // OPTIONAL
+        response: true, // OPTIONAL (return the entire Axios response object instead of only response.data)
+        queryStringParameters: {  // OPTIONAL
+            "name": 'param',
+            "cognito-username":userName
+        },
+    };
+
+    API
+        .get(apiName, path, myInit)
+        .then(response => {
+            // Add your code here
+            console.log(response)
+        })
+        .catch(error => {
+            console.log(error.response);
+        });
+
 }
 
 // This function is called when a user deletes an existing item in the table
