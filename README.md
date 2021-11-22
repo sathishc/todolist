@@ -4,7 +4,6 @@ In this demo, we are building an App that allows you to create a Todo list that 
 
 ![Todo List Frontend](public/todo-list.png)
 
-
 ## Architecture 
 
 The below diagram shows the architecture of the App - A react front-end utilizes AppSync graphql server to create, read, delete items to a DynamoDB database. We also have an integration with Amazon Rekognition which provides Computer Vision capabilities to detect objects in images that are used as labels to create the shopping list items. 
