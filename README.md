@@ -254,7 +254,7 @@ export async function deleteItem(itemId) {
 
  Until now we have just provisioned backend and connected from a local front-end. Now we will host the front-end using Amplify.
 
- Use the command `amplify add hosting` and follow the steps
+ From the project root, run the command `amplify add hosting` and follow the steps
 
  ```
  Select Hosting with Amplify Console
