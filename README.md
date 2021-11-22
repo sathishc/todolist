@@ -11,11 +11,29 @@ The below diagram shows the architecture of the App - A react front-end utilizes
 
 ![Todo List Architecture](public/Todo-Architecture.png)
 
+### Pre-requisites
+1. Update nodejs to version 12. `nvm install 12.22`
+2. CDK CLI ==> `npm install -g aws-cdk`
+3. Amplify CLI ==> `npm install -g @aws-amplify/cli`
+4. AWS Account
+
 ## Get Started by cloning the repo
 
 `git clone https://github.com/sathishc/todolist`
 
-## Setup the backend using CDK
+## Install the necessary npm packages in the frontend
+
+From the root of the project
+
+```
+npm install
+```
+
+Now you will have a frontend that includes just the React front-end. We are using React-Material-UI components to style the front-end. This is just boiler plate code without any backend integrations into AWS. In the repo, you fill find the files 'predictions.js' and 'db.js' under src/api folders. We will add code here after deploying the necessary backends using Amplify 
+
+Run `npm start` to see the UI frontend
+
+## Setup the backend using the CDK
 
 We will setup the backend which consists of lambda functions to add, list and delete todos, an api gateway, a dynamodb database and cognito user pool and identity pool using the CDK.
 
@@ -45,25 +63,9 @@ Now deploy the infrastructure.
 cdk deploy -O ../src/cdk-exports.json
 ```
 
-## Install the necessary npm packages in the frontend
+The above command will deploy the infrstructure and output necessary configuartion end points to the json file
 
-From the root of the project
-
-```
-npm install
-```
-
-Now you will have a frontend that includes just the React front-end. We are using React-Material-UI components to style the front-end. This is just boiler plate code without any backend integrations into AWS. In the repo, you fill find the files 'predictions.js' and 'db.js' under src/api folders. We will add code here after deploying the necessary backends using Amplify 
-
-Run `npm start` to see the UI frontend
-
-## Install Amplify CLI, Initialize the project and add necessary libraries
-
-**Install the Amplify CLI globally**
-
-```
-npm install -g @aws-amplify/cli
-```
+## Initialize the front-end and add necessary libraries
 
 **Initialize Amplify in the project from the root folder**
 
@@ -71,9 +73,7 @@ npm install -g @aws-amplify/cli
 amplify init --y
 ``` 
 
-to initialize the amplify project with default parameters and AWS default profile
-
-Install Amplify javascript libraries needed from within the root folder of the repository
+to initialize the amplify project with default parameters and AWS default profile. Install Amplify javascript libraries needed from within the root folder of the repository
 
 ```
 npm install --save aws-amplify @aws-amplify/ui-react
