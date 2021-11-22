@@ -2,12 +2,12 @@ import * as cdk from '@aws-cdk/core';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cognito from '@aws-cdk/aws-cognito';
 
-export interface TodoListAuthProps {
-    
-}
+export interface TodoListAuthProps {}
 
 export class TodoListAuth extends cdk.Construct {
-    constructor(scope: cdk.Construct, id: string, props?: TodoListAuthProps) {
+    public readonly userPool: cognito.UserPool;
+
+    constructor(scope: cdk.Construct, id: string) {
         super(scope, id);
         
         const servicePrincipal = new iam.WebIdentityPrincipal("cognito-identity.amazonaws.com");    
@@ -29,24 +29,33 @@ export class TodoListAuth extends cdk.Construct {
         }));
         */
 
-        const userPool = new cognito.UserPool(this,`${id}-UserPool`, {
+        this.userPool = new cognito.UserPool(this,`${id}-UserPool`, {
             removalPolicy: cdk.RemovalPolicy.DESTROY, // FOR TESTING ONLY - Default option should be to RETAIN
             selfSignUpEnabled:true
         });
         
-        const todoWebClient= userPool.addClient(`${id}-WebClient`, {generateSecret:false});
+        const todoWebClient= this.userPool.addClient(`${id}-WebClient`, {generateSecret:false});
         // const todoAppClient= userPool.addClient("TodoListAppClient",{generateSecret:true});
 
         const identityPool = new cognito.CfnIdentityPool(this, `${id}-IdentityPool`, {
             allowUnauthenticatedIdentities:true,
             cognitoIdentityProviders:[{
-                providerName:userPool.userPoolProviderName,
+                providerName:this.userPool.userPoolProviderName,
                 clientId:todoWebClient.userPoolClientId
-            }]
+            }],
         });
 
+        const roleAttachment = new cognito.CfnIdentityPoolRoleAttachment(this, "roleAttachment", {
+            identityPoolId:identityPool.ref,
+            roles:{
+              "unauthenticated":unauthRole.roleArn,
+              "authenticated": authRole.roleArn
+            }
+          });
+        
+
         new cdk.CfnOutput(scope, 'user_pool', {
-            value: userPool.userPoolId
+            value: this.userPool.userPoolId
         });
         new cdk.CfnOutput(scope, 'identity_pool', {
             value: identityPool.ref
@@ -57,6 +66,5 @@ export class TodoListAuth extends cdk.Construct {
         new cdk.CfnOutput(scope, 'web_client_id', {
             value: todoWebClient.userPoolClientId
         });
-        
     }
 }

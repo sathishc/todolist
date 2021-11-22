@@ -27,7 +27,8 @@ export class BackendStack extends cdk.Stack {
     const functions = new TodoListFunctions(this, `${projectName}-todoListFunctions`, {
       table: table,
       projectName:projectName,
-      envName:envName
+      envName:envName,
+      userPool:todoListAuth.userPool
     });
   }
 }

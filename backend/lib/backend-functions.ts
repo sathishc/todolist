@@ -2,12 +2,14 @@ import * as cdk from '@aws-cdk/core';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as apigateway from '@aws-cdk/aws-apigateway';
+import * as cognito from '@aws-cdk/aws-cognito';
 import * as path from 'path'
 
 export interface TodoListFunctionsProps {
     table: dynamodb.Table  
     projectName: string,
     envName: string,
+    userPool: cognito.UserPool
 }
 
 export class TodoListFunctions extends cdk.Construct {
@@ -39,10 +41,27 @@ export class TodoListFunctions extends cdk.Construct {
           table.grantReadWriteData(addTodoHandler);
       
           // The code that defines your stack goes here
-          const api = new apigateway.RestApi(scope, `${projectName}-todoApi`)
+          const api = new apigateway.RestApi(scope, `${projectName}-todoApi`, {
+            defaultCorsPreflightOptions: {
+              allowOrigins: apigateway.Cors.ALL_ORIGINS,
+              allowMethods: apigateway.Cors.ALL_METHODS // this is also the default
+            }
+          })
+
+          const authorizer = new apigateway.CognitoUserPoolsAuthorizer(this, 'todosAuthorizer', {
+            cognitoUserPools: [props.userPool]
+          });
+
           const todos = api.root.addResource("todos")
-          todos.addMethod("GET",new apigateway.LambdaIntegration(getTodosHandler));
-          todos.addMethod("PUT",new apigateway.LambdaIntegration(addTodoHandler));   
+          todos.addMethod("GET",new apigateway.LambdaIntegration(getTodosHandler), {
+            authorizer: authorizer,
+            authorizationType: apigateway.AuthorizationType.COGNITO,
+          });
+
+          todos.addMethod("PUT",new apigateway.LambdaIntegration(addTodoHandler), {
+            authorizer: authorizer,
+            authorizationType: apigateway.AuthorizationType.COGNITO,
+          });   
 
           
           new cdk.CfnOutput(scope, 'api_name', {
