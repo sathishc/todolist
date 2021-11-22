@@ -25,14 +25,17 @@ import NavBar from './components/NavBar'
 import AddItemCard from './components/AddItemCard'
 import { Grid } from '@material-ui/core'
 
+// import Amplift and Hub
 import { Amplify, Hub } from 'aws-amplify';
+// Retrieve confirguation info from aws-exports and cdk-exports
 import config from './aws-exports';
 import { BackendStack } from "./cdk-exports.json"
 
+// import the Authenticator and ui for react
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
-
+// setup configurations
 const cdkConfig = {
   API: {
     endpoints: [
@@ -48,10 +51,8 @@ const cdkConfig = {
   aws_cognito_identity_pool_id: BackendStack.identitypool,
 }
 
-
 Amplify.configure(config);
 Amplify.configure(cdkConfig);
-
 
 function App() {
 
@@ -66,15 +67,15 @@ function App() {
     setItems(await getUserItems())
   }
   
-  
+  // use the Hub to remspond toe events
   Hub.listen('auth', (data) => {
     if (data.payload.event === 'signIn') {
       fetchData()
     }
   });
-  
 
   return (
+    // Wrap the code with authenticator, emnable email as an additional attribute
     <Authenticator signUpAttributes={[
       'email',
     ]}>

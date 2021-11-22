@@ -15,10 +15,43 @@ The below diagram shows the architecture of the App - A react front-end utilizes
 
 `git clone https://github.com/sathishc/todolist`
 
+## Setup the backend using CDK
 
-## Install the necessary npm packages
+We will setup the backend which consists of lambda functions to add, list and delete todos, an api gateway, a dynamodb database and cognito user pool and identity pool using the CDK.
 
-`npm install`
+The Lambda functions are implemented in nodejs. To make sure the functions are ready to deploy you need to change directory into reach function directory and install the node modules
+
+From the root of the directory run the following commands
+```
+cd backend
+
+cd functions/addTodo
+npm install
+cd ../..
+
+cd functions/getAllTodo
+npm install
+cd ../..
+
+cd functions/deleteTodo
+npm install
+cd ../..
+
+```
+
+Now deploy the infrastructure.
+
+```
+cdk deploy -O ../src/cdk-exports.json
+```
+
+## Install the necessary npm packages in the frontend
+
+From the root of the project
+
+```
+npm install
+```
 
 Now you will have a frontend that includes just the React front-end. We are using React-Material-UI components to style the front-end. This is just boiler plate code without any backend integrations into AWS. In the repo, you fill find the files 'predictions.js' and 'db.js' under src/api folders. We will add code here after deploying the necessary backends using Amplify 
 
@@ -35,48 +68,17 @@ Run `npm start` to see the UI frontend
 
 `amplify init --y` to initialize the amplify project with default parameters and AWS default profile
 
-
 ## Install Amplify javascript libraries needed from within the root folder of the repository
 
-`npm install --save aws-amplify@4.2.9 @aws-amplify/ui-react@1.2.15`
+`npm install --save aws-amplify @aws-amplify/ui-react`
 
-## Add Authentication
+## Connect the front-end to the backend infrastructure that we deployed
 
-**Add authentication backend to the app using the command**
-
-`amplify add auth`
-
-**Follow the steps below for inputs**
+Open the file App.js and add the following to import the necessary components and configure the amplify app.
 
 ```
-Select Default Configuration when asked if you'd like to use the default authentication and security configuration.
-   
-Select Username when asked how you want users to sign in.
-   
-Select "No, I am done." when asked about advanced settings.
-
-Run `amplify push` and confirm with a 'Yes' to create these changes in the cloud.
-
-Confirm you want Amplify to make changes in the cloud for you.
 ```
 
-Wait for the provisioning to complete. This will take a few minutes. The above steps creates an Authentication backend provider using Cognito user and identity pools and connects that with the Amplify project.
-
-**Add authentication front-end**
-
-Open the file index.js and uncomment the below lines to import the necessary components and configure the amplify app.
-
-```
-// import { Amplify } from 'aws-amplify';
-// import config from './aws-exports';
-// import { AmplifyAuthenticator } from '@aws-amplify/ui-react';
-
-// Amplify.configure(config);
-```
-
-Replace the `<App />` component in the same file with `<AmplifyAuthenticator><App /></AmplifyAuthenticator>`. 
-
-AmplifyAuthenticator is a React higher-order component that adds sign-in, sign-up features into a React App. Reloading the App should now show you the signup functionality. 
 
 Enable Hub functionality in `src/App.js` by uncommenting the relevant statements. You can do importing the Hub module `import { Hub } from 'aws-amplify';` and listening to signin events using
 
@@ -91,46 +93,6 @@ Enable Hub functionality in `src/App.js` by uncommenting the relevant statements
 Hub is a lightweight implementation of Publisher-Subscriber pattern, and is used to share data between modules and components in your app. Here we are using it to fetch backend data whenever a new sign-in occurs.
 
 Enable sign out functionality in `src/components/Navbar.js` by un-commenting relevant code. We will be doing it by importing the Auth module `import { Auth } from 'aws-amplify';` and then adding `await Auth.signOut();` on click of the logout button.  
-
-## Add the backend database 
-
-
-## Add the necessary functions
-
-
-## Add an API to interact with the DB
-
-We will use Amplify to create a REST API using API gateway
-
-**Add the api and backend to the app using the command**
-
-`amplify add api`
-
-**Follow the steps below for inputs**
-
-```
-Select REST
-Provide API Name:todorestapi
-
-```
-The above will ceate the necessary Cloudformation scripts locally to create AppSync GraphQL infrastructure. Edit the Todo Schema and replace the same to ShoppingListItem below. 
-
-
-To deploy the infrastructure to the backend run
-
-`amplify push`
-
-// Todo
-
-**Integrate the API to front-end**
-
-Now we will have the necessary infrasttucture to integrate our front end code. We will also be able to import the generate graphql queries and mutations for easy integration into AppSync. Since we need to have a way to identify a user with each item, we will also use the Auth library. Import the libraries and add necessary code for integration in api/db.js file.
-
-```javascript
-    
-
-```
-You should now be able to see the add, list and delete features working in the front end. 
 
 
  ## Add Hosting
