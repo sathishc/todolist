@@ -96,7 +96,6 @@ function App() {
                   if (response){
                     setItems([...items, response])  
                   }
-                  
                 }
               }     
             />
