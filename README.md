@@ -61,16 +61,23 @@ Run `npm start` to see the UI frontend
 
 **Install the Amplify CLI globally**
 
-`npm install -g @aws-amplify/cli`
-
+```
+npm install -g @aws-amplify/cli
+```
 
 **Initialize Amplify in the project from the root folder**
 
-`amplify init --y` to initialize the amplify project with default parameters and AWS default profile
+```
+amplify init --y
+``` 
 
-## Install Amplify javascript libraries needed from within the root folder of the repository
+to initialize the amplify project with default parameters and AWS default profile
 
-`npm install --save aws-amplify @aws-amplify/ui-react`
+Install Amplify javascript libraries needed from within the root folder of the repository
+
+```
+npm install --save aws-amplify @aws-amplify/ui-react
+```
 
 ## Connect the front-end to the backend infrastructure that we deployed
 
