@@ -140,6 +140,8 @@ function App() {
   Hub.listen('auth', (data) => {
     if (data.payload.event === 'signIn') {
       fetchData()
+    } else if (data.payload.event === 'signOut') {
+      window.location.reload();
     }
   });
 
@@ -148,9 +150,9 @@ function App() {
     <Authenticator signUpAttributes={[
       'email',
     ]}>
-    {({ signOut, user }) => (  
+    {() => (  
     <div className="app">
-      <NavBar />
+      <NavBar/>
       
       <div className="content">
         <Grid container spacing={3}>
@@ -163,7 +165,6 @@ function App() {
                   if (response){
                     setItems([...items, response])  
                   }
-                  
                 }
               }     
             />
@@ -186,7 +187,6 @@ function App() {
 }
 
 export default App;
-
 ```
 Refreshing the browser should show up a login and signup screen. SIgnup using your username/password and email.
 
@@ -219,7 +219,6 @@ export async function getUserItems() {
 
 // This function is called when a user clicks the button 'Add'
 export async function addItem(itemName) {
-    
     const myInit = { 
         headers: { 
             Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
@@ -229,9 +228,7 @@ export async function addItem(itemName) {
         },
     };
 
-    console.log("Adding item ", myInit);
     const todo = await API.post(apiName, todosPath, myInit)
-    console.log("Added ", todo)    
     return todo.Item;
 }
 
@@ -243,9 +240,7 @@ export async function deleteItem(itemId) {
         }
     };
 
-    console.log("Deleting item ", myInit);
     const todo = await API.del(apiName, todosPath + "/" + itemId, myInit)
-    console.log("Deleted ", todo)    
     return itemId;
 }
 ```
