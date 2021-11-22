@@ -260,11 +260,13 @@ export async function deleteItem(itemId) {
 
 ## Cleanup
 
-If you are just trying our Amplify and its features, you may want to cleanup the provisioned resources using
+Cleanup the App frontend by running `amplify delete` from the project root.
 
-`amplify delete`
-
-The features demonstrated is just the small subset of the various categories available. You may also want to try experimenting with categories like analytics, search and other AI features like translation, chatbots, etc.
+To delete the backend services, run the following
+```
+cd backend
+cdk destroy
+```
 
 Have fun and build on !
 
