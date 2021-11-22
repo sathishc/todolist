@@ -36,9 +36,19 @@ export class TodoListFunctions extends cdk.Construct {
               "TABLE_NAME":table.tableName
             }
           })
+
+          const deleteTodoHandler = new lambda.Function(scope,`${projectName}-deleteTodo`, {
+            runtime: lambda.Runtime.NODEJS_12_X,
+            handler: 'app.deleteToDoItem',
+            code: lambda.Code.fromAsset(path.join(__dirname, '../functions/deleteTodo')),
+            environment:{
+              "TABLE_NAME":table.tableName
+            }
+          })
       
           table.grantReadWriteData(getTodosHandler);
           table.grantReadWriteData(addTodoHandler);
+          table.grantReadWriteData(deleteTodoHandler);
       
           // The code that defines your stack goes here
           const api = new apigateway.RestApi(scope, `${projectName}-todoApi`, {
@@ -58,10 +68,17 @@ export class TodoListFunctions extends cdk.Construct {
             authorizationType: apigateway.AuthorizationType.COGNITO,
           });
 
-          todos.addMethod("PUT",new apigateway.LambdaIntegration(addTodoHandler), {
+          todos.addMethod("POST",new apigateway.LambdaIntegration(addTodoHandler), {
             authorizer: authorizer,
             authorizationType: apigateway.AuthorizationType.COGNITO,
-          });   
+          });
+          
+          
+          const todo = todos.addResource('{id}');
+          todo.addMethod('DELETE', new apigateway.LambdaIntegration(deleteTodoHandler), {
+            authorizer: authorizer,
+            authorizationType: apigateway.AuthorizationType.COGNITO,
+          });
 
           
           new cdk.CfnOutput(scope, 'api_name', {
