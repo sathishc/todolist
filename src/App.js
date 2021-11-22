@@ -71,6 +71,8 @@ function App() {
   Hub.listen('auth', (data) => {
     if (data.payload.event === 'signIn') {
       fetchData()
+    } else if (data.payload.event === 'signOut') {
+      window.location.reload();
     }
   });
 
@@ -79,9 +81,9 @@ function App() {
     <Authenticator signUpAttributes={[
       'email',
     ]}>
-    {({ signOut, user }) => (  
+    {() => (  
     <div className="app">
-      <NavBar />
+      <NavBar/>
       
       <div className="content">
         <Grid container spacing={3}>
