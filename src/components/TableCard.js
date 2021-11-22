@@ -41,7 +41,7 @@ const TableCard = ({
               return (
                 <TableRow key={item.id}>
                   <TableCell>
-                    {item.itemName}
+                    {item.name}
                   </TableCell>
                   <TableCell align="right">
                     <IconButton
