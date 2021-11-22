@@ -79,7 +79,7 @@ to initialize the amplify project with default parameters and AWS default profil
 npm install --save aws-amplify @aws-amplify/ui-react
 ```
 
-## Connect the front-end to the backend infrastructure that we deployed
+## Connect the App to backend services
 
 Open the file src/App.js and add the following to import the necessary components and configure the amplify app.
 
