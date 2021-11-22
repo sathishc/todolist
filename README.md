@@ -268,7 +268,7 @@ cd backend
 cdk destroy
 ```
 
-Have fun and build on !
+Wait for the cleanup to complete.
 
 ## Security
 
