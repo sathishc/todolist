@@ -37,8 +37,8 @@ const cdkConfig = {
   API: {
     endpoints: [
       {
-        name: BackendStack.AirqualityApiName,
-        endpoint: BackendStack.AirqualityApiEndpoint
+        name: BackendStack.apiname,
+        endpoint: BackendStack.apiendpoint
       }
     ]
   }, 
