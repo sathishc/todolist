@@ -29,7 +29,7 @@ From the root of the project
 npm install
 ```
 
-Now you will have a frontend that includes just the React front-end. We are using React-Material-UI components to style the front-end. This is just boiler plate code without any backend integrations into AWS. In the repo, you fill find the files 'predictions.js' and 'db.js' under src/api folders. We will add code here after deploying the necessary backends using Amplify 
+Now you will have a frontend that includes just the React front-end. We are using React-Material-UI components to style the front-end. This is just boiler plate code without any backend integrations into AWS. In the repo, you fill find the file 'db.js' under src/api folder. We will add code here to integrate the frontend to backend services
 
 Run `npm start` to see the UI frontend
 
