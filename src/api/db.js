@@ -16,17 +16,47 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import { API, Auth } from 'aws-amplify'
+
+const apiName = 'todolist-todoApi';
+const todosPath = '/todos'; 
+
 // This function is called immediately when the page loads, before populating the table with this data
 export async function getUserItems() {
-    return []
+    const myInit = { 
+        headers: { 
+            Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+        },
+    };
+
+    const todos = await API.get(apiName, todosPath, myInit);
+    console.log("Todos ", todos);
+    return todos.Items;
 }
 
 // This function is called when a user clicks the button 'Add'
 export async function addItem(itemName) {
-    
+    const myInit = { 
+        headers: { 
+            Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+        },
+        body: {  
+            "name": itemName,
+        },
+    };
+
+    const todo = await API.post(apiName, todosPath, myInit)
+    return todo.Item;
 }
 
 // This function is called when a user deletes an existing item in the table
 export async function deleteItem(itemId) {
-    
+    const myInit = { 
+        headers: { 
+            Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+        }
+    };
+
+    const todo = await API.del(apiName, todosPath + "/" + itemId, myInit)
+    return itemId;
 }

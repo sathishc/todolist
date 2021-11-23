@@ -1,0 +1,11 @@
+{
+  "BackendStack": {
+    "identitypool": "us-west-2:f51909b0-af31-44f5-ac42-6fd64dcb21a7",
+    "apiname": "todolist-todoApi",
+    "awscognitoregion": "us-west-2",
+    "webclientid": "6nhdf28kn2f9ue63jtc9he371g",
+    "todolisttodoApiEndpoint5E65A4F4": "https://mw7qcecjl4.execute-api.us-west-2.amazonaws.com/prod/",
+    "userpool": "us-west-2_8YCgPioLq",
+    "apiendpoint": "https://mw7qcecjl4.execute-api.us-west-2.amazonaws.com/prod/"
+  }
+}
