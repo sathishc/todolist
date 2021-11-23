@@ -34,6 +34,17 @@ Now you will have a frontend that includes just the React front-end. We are usin
 
 Run `npm start` to see the UI frontend
 
+## Initialize the front-end and add necessary libraries
+```
+amplify init --y
+``` 
+
+to initialize the amplify project with default parameters and AWS default profile. Install Amplify javascript libraries needed from within the root folder of the repository
+
+```
+npm install --save aws-amplify @aws-amplify/ui-react
+```
+
 ## Setup the backend using the CDK
 
 We will setup the backend which consists of lambda functions to add, list and delete todos, an api gateway, a dynamodb database and cognito user pool and identity pool using the CDK.
@@ -68,19 +79,7 @@ cdk deploy -O ../src/cdk-exports.json
 
 The above command will deploy the infrstructure and output necessary configuartion end points to the json file
 
-## Initialize the front-end and add necessary libraries
 
-**Initialize Amplify in the project from the root folder**
-
-```
-amplify init --y
-``` 
-
-to initialize the amplify project with default parameters and AWS default profile. Install Amplify javascript libraries needed from within the root folder of the repository
-
-```
-npm install --save aws-amplify @aws-amplify/ui-react
-```
 
 ## Configure the App to use backend services
 
