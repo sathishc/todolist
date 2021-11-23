@@ -18,20 +18,16 @@ export class TodoListAuth extends cdk.Construct {
             assumedBy:servicePrincipal
         });
 
-        /*
-        authRole.addToPrincipalPolicy(new iam.PolicyStatement({
-            resources: [map.attrArn, placesIndex.attrArn],
-            actions: ['geo:*']
-        }));
-        unauthRole.addToPrincipalPolicy(new iam.PolicyStatement({
-            resources: [map.attrArn, placesIndex.attrArn],
-            actions: ['geo:*']
-        }));
-        */
-
         this.userPool = new cognito.UserPool(this,`${id}-UserPool`, {
             removalPolicy: cdk.RemovalPolicy.DESTROY, // FOR TESTING ONLY - Default option should be to RETAIN
-            selfSignUpEnabled:true
+            selfSignUpEnabled:true,
+            signInAliases: {
+                username: true,
+                email: true
+            },
+            standardAttributes: {
+                email: { required: true}
+            }
         });
         
         const todoWebClient= this.userPool.addClient(`${id}-WebClient`, {generateSecret:false});
