@@ -56,9 +56,11 @@ cd ../..
 
 ```
 
-Now deploy the infrastructure.
+Now deploy the infrastructure. From the todolist/backend folder run the following.
 
 ```
+npm install
+cdk bootstrap
 cdk deploy -O ../src/cdk-exports.json
 ```
 
