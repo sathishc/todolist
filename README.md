@@ -1,6 +1,6 @@
 ## Build a Simple Todo List using DynamoDb, API Gateway, Lambda and Amplify
 
-In this demo, we are building an App that allows you to create a Todo list that can be accessed from the web. This app demonstrates commencting to a DynamoDB backned using API Gateway and Lambda functions
+In this demo, we are building an App that allows you to create a Todo list that can be accessed from the web. This app demonstrates an Amplify front end connecting to a DynamoDB database using API Gateway and Lambda functions. The backend services are deployed using the CDK.
 
 ![Todo List Frontend](public/todo-list.png)
 
