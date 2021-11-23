@@ -41,7 +41,7 @@ function getCognitoUsername(event) {
   return null;
 }
 
-function addRecord(event) {
+function addRecord(event, recordId) {
   let usernameField = {
     "cognito-username": getCognitoUsername(event),
   };
@@ -49,7 +49,7 @@ function addRecord(event) {
   // auto generated date fields
   let dISO = new Date().toISOString();
   let auto_fields = {
-    id: uuidv1(),
+    id: recordId,
     creation_date: dISO,
     lastupdate_date: dISO,
   };
@@ -72,6 +72,18 @@ function addRecord(event) {
   return docClient.put(params);
 }
 
+function getRecordById(username, recordId) {
+    let params = {
+      TableName: TABLE_NAME,
+      Key: {
+        "cognito-username": username,
+        id: recordId,
+      },
+    };
+  
+    return docClient.get(params);
+  }
+
 // Lambda Handler
 exports.addToDoItem = metricScope((metrics) => async (event, context) => {
   metrics.setNamespace("TodoApp");
@@ -84,8 +96,10 @@ exports.addToDoItem = metricScope((metrics) => async (event, context) => {
   }
 
   try {
-    let data = await addRecord(event).promise();
+    let recordId = uuidv1();  
+    await addRecord(event, recordId).promise();
     metrics.putMetric("Success", 1, Unit.Count);
+    let data = await getRecordById(getCognitoUsername(event),recordId).promise()
     return response(200, data);
   } catch (err) {
     metrics.putMetric("Error", 1, Unit.Count);
