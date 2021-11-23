@@ -18,7 +18,9 @@ The below diagram shows the architecture of the App - A react front-end utilizes
 
 ## Get Started by cloning the repo
 
-`git clone https://github.com/sathishc/todolist`
+```
+git clone https://github.com/sathishc/todolist
+```
 
 ## Install the necessary npm packages in the frontend
 
