@@ -36,10 +36,12 @@ Run `npm start` to see the UI frontend
 
 ## Initialize the front-end and add necessary libraries
 ```
-amplify init --y
+amplify init
 ``` 
 
-to initialize the amplify project with default parameters and AWS default profile. Install Amplify javascript libraries needed from within the root folder of the repository
+and initialize the amplify project with default parameters. Choose an AWS profile or provide accessKey/secret/region to configure the account and region of your choice. 
+
+Install Amplify javascript libraries needed from within the root folder of the repository
 
 ```
 npm install --save aws-amplify @aws-amplify/ui-react
