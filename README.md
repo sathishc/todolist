@@ -244,7 +244,7 @@ export async function deleteItem(itemId) {
         }
     };
 
-    const todo = await API.del(apiName, todosPath + "/" + itemId, myInit)
+    await API.del(apiName, todosPath + "/" + itemId, myInit)
     return itemId;
 }
 ```
