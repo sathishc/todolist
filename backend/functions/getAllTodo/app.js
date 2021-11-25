@@ -49,7 +49,7 @@ function getRecords(username) {
       ":username": username,
     },
   };
-
+  // dont use in production - you should be using a secondary index
   return docClient.scan(params);
 }
 
