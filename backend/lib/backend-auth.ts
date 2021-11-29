@@ -6,15 +6,17 @@ export interface TodoListAuthProps {}
 
 export class TodoListAuth extends cdk.Construct {
     public readonly userPool: cognito.UserPool;
+    public readonly authRole: iam.Role;
+    public readonly unAuthRole: iam.Role;
 
     constructor(scope: cdk.Construct, id: string) {
         super(scope, id);
         
         const servicePrincipal = new iam.WebIdentityPrincipal("cognito-identity.amazonaws.com");    
-        const authRole = new iam.Role(this, `${id}-AuthRole`, {
+        this.authRole = new iam.Role(this, `${id}-AuthRole`, {
             assumedBy:servicePrincipal
         });
-        const unauthRole = new iam.Role(this,`${id}-UnAuthRole`,{
+        this.unAuthRole = new iam.Role(this,`${id}-UnAuthRole`,{
             assumedBy:servicePrincipal
         });
 
