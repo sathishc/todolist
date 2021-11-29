@@ -4,14 +4,13 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as path from 'path'
-import * as iam from '@aws-cdk/aws-iam';
+
 
 export interface TodoListFunctionsProps {
     table: dynamodb.Table  
     projectName: string,
     envName: string,
-    userPool: cognito.UserPool,
-    authRole: iam.Role
+    userPool: cognito.UserPool    
 }
 
 export class TodoListFunctions extends cdk.Construct {
