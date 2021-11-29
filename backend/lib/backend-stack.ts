@@ -9,7 +9,7 @@ export class BackendStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const projectName = 'todoList`; //AmplifyHelpers.getProjectInfo().projectName;
+    const projectName = 'todoList1'; //AmplifyHelpers.getProjectInfo().projectName;
     const envName = 'dev'; // AmplifyHelpers.getProjectInfo().envName
 
     // setup a cognito user and identity pool
