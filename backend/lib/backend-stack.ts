@@ -28,7 +28,8 @@ export class BackendStack extends cdk.Stack {
       table: table,
       projectName:projectName,
       envName:envName,
-      userPool:todoListAuth.userPool
+      userPool:todoListAuth.userPool,
+      authRole: todoListAuth.authRole
     });
   }
 }
