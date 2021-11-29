@@ -1,6 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import * as AmplifyHelpers from '@aws-amplify/cli-extensibility-helper';
+// import * as AmplifyHelpers from '@aws-amplify/cli-extensibility-helper';
 
 import { TodoListAuth } from './backend-auth';
 import { TodoListFunctions } from './backend-functions';
@@ -9,8 +9,8 @@ export class BackendStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const projectName = AmplifyHelpers.getProjectInfo().projectName;
-    const envName = AmplifyHelpers.getProjectInfo().envName
+    const projectName = 'todoList`; //AmplifyHelpers.getProjectInfo().projectName;
+    const envName = 'dev'; // AmplifyHelpers.getProjectInfo().envName
 
     // setup a cognito user and identity pool
     const todoListAuth = new TodoListAuth(this, `${projectName}-todoListAuth`);
