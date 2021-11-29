@@ -46,8 +46,8 @@ export class TodoListAuth extends cdk.Construct {
         const roleAttachment = new cognito.CfnIdentityPoolRoleAttachment(this, "roleAttachment", {
             identityPoolId:identityPool.ref,
             roles:{
-              "unauthenticated":unauthRole.roleArn,
-              "authenticated": authRole.roleArn
+              "unauthenticated":this.unAuthRole.roleArn,
+              "authenticated": this.authRole.roleArn
             }
           });
         
