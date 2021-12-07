@@ -15,5 +15,6 @@ export class FrontendStack extends cdk.Stack {
           oauthToken: cdk.SecretValue.secretsManager('github-token')
         }),
     }); 
+    amplifyApp.addBranch("main",{autoBuild:true})
   }
 }
