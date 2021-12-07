@@ -6,11 +6,14 @@ export interface TodoListAuthProps {}
 
 export class TodoListAuth extends cdk.Construct {
     public readonly userPool: cognito.UserPool;
+    public readonly identityPool: cognito.CfnIdentityPool;
+    public readonly webClient: cognito.UserPoolClient;
     public readonly authRole: iam.Role;
     public readonly unAuthRole: iam.Role;
 
     constructor(scope: cdk.Construct, id: string) {
         super(scope, id);
+        const self = this;
         
         const servicePrincipal = new iam.WebIdentityPrincipal("cognito-identity.amazonaws.com");    
         this.authRole = new iam.Role(this, `${id}-AuthRole`, {
@@ -32,19 +35,19 @@ export class TodoListAuth extends cdk.Construct {
             }
         });
         
-        const todoWebClient= this.userPool.addClient(`${id}-WebClient`, {generateSecret:false});
+        this.webClient = this.userPool.addClient(`${id}-WebClient`, {generateSecret:false});
         // const todoAppClient= userPool.addClient("TodoListAppClient",{generateSecret:true});
 
-        const identityPool = new cognito.CfnIdentityPool(this, `${id}-IdentityPool`, {
+        this.identityPool = new cognito.CfnIdentityPool(this, `${id}-IdentityPool`, {
             allowUnauthenticatedIdentities:true,
             cognitoIdentityProviders:[{
                 providerName:this.userPool.userPoolProviderName,
-                clientId:todoWebClient.userPoolClientId
+                clientId:self.webClient.userPoolClientId
             }],
         });
 
         const roleAttachment = new cognito.CfnIdentityPoolRoleAttachment(this, "roleAttachment", {
-            identityPoolId:identityPool.ref,
+            identityPoolId: self.identityPool.ref,
             roles:{
               "unauthenticated":this.unAuthRole.roleArn,
               "authenticated": this.authRole.roleArn
@@ -53,16 +56,16 @@ export class TodoListAuth extends cdk.Construct {
         
 
         new cdk.CfnOutput(scope, 'user_pool', {
-            value: this.userPool.userPoolId
+            value: self.userPool.userPoolId
         });
         new cdk.CfnOutput(scope, 'identity_pool', {
-            value: identityPool.ref
+            value: self.identityPool.ref
         });
         new cdk.CfnOutput(scope, 'aws_cognito_region', {
             value: cdk.Stack.of(this).region
         });
         new cdk.CfnOutput(scope, 'web_client_id', {
-            value: todoWebClient.userPoolClientId
+            value: self.webClient.userPoolClientId
         });
     }
 }

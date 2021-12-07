@@ -1,7 +1,5 @@
 import * as cdk from '@aws-cdk/core';
 import * as pipelines from '@aws-cdk/pipelines';
-import * as codepipeline from '@aws-cdk/aws-codepipeline';
-import * as cpactions from "@aws-cdk/aws-codepipeline-actions"
 import { TodolistPipelineStage } from './pipeline-stage';
 
 export class TodolistPipelineStack extends cdk.Stack {

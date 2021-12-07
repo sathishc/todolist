@@ -14,6 +14,9 @@ export interface TodoListFunctionsProps {
 }
 
 export class TodoListFunctions extends cdk.Construct {
+    public readonly apiEndpoint: string;
+    public readonly apiName: string;
+
     constructor(scope: cdk.Construct, id: string, props: TodoListFunctionsProps) {
         super(scope, id);
 
@@ -58,6 +61,9 @@ export class TodoListFunctions extends cdk.Construct {
               allowMethods: apigateway.Cors.ALL_METHODS // this is also the default
             }
           })
+
+          this.apiName = api.restApiName
+          this.apiEndpoint = api.url
 
           const authorizer = new apigateway.CognitoUserPoolsAuthorizer(this, 'todosAuthorizer', {
             cognitoUserPools: [props.userPool]
