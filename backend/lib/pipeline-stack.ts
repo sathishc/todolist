@@ -16,7 +16,6 @@ export class TodolistPipelineStack extends cdk.Stack {
                     'npm install -g typescript',
                     'npm install -g ts-node',
                     'npm install -g aws-cdk',
-                    'npm ci',
                     'cd backend',
                     'cd functions',
                     'cd addTodo',
