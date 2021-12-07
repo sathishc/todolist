@@ -31,7 +31,7 @@ export class TodolistPipelineStack extends cdk.Stack {
                     'cd ..',
                   ],
                   commands: [
-                    'npm ci',
+                    'npm install',
                     'npx cdk synth'
                   ],
                   primaryOutputDirectory:'backend/cdk.out'
