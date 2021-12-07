@@ -3,24 +3,12 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm install -g aws-cdk
-        - npm install
         - cd backend
-        - cd functions/addTodo
-        - npm install
-        - cd ../..
-        - cd functions/getAllTodo
-        - npm install
-        - cd ../..
-        - cd functions/deleteTodo
-        - npm install
-        - cd ../..
-        - npm install
         - cdk bootstrap
         - cdk deploy -O ../src/cdk-exports.json
     build:
       commands:
-        - cd ..
+        - cd ../todolist-frontend
         - npm run build
   artifacts:
     baseDirectory: build
