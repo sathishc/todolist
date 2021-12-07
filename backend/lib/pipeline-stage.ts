@@ -1,5 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 import { BackendStack } from './backend-stack'
+import { FrontendStack } from './frontend-stack';
 
 export class TodolistPipelineStage extends cdk.Stage {
     public readonly apiName: string
@@ -14,6 +15,7 @@ export class TodolistPipelineStage extends cdk.Stage {
 
 
         const todoBackend = new BackendStack(this, 'TodolistService');
+        const todoFrontend = new FrontendStack(this, 'TodolistApp');
 
         this.apiName = todoBackend.apiName;
         this.apiEndpoint = todoBackend.apiEndpoint;
