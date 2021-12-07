@@ -11,9 +11,9 @@ export class FrontendStack extends cdk.Stack {
     const amplifyApp = new amplify.App(this, 'Todolist-Frontend', {
         sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
           owner: 'sathishc',
-          repository: 'todolist',
+          repository: 'todolist-frontend',
           oauthToken: cdk.SecretValue.secretsManager('github-token')
         }),
-      }); 
+    }); 
   }
 }
