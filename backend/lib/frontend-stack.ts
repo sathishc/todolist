@@ -34,6 +34,5 @@ export class FrontendStack extends cdk.Stack {
             "TODO_REGION":props.region
         }
     });
-    
   }
 }
