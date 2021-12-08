@@ -23,9 +23,8 @@ export class FrontendStack extends cdk.Stack {
           oauthToken: cdk.SecretValue.secretsManager('github-token')
         }),
     }); 
-    amplifyApp.addBranch("main",{
+    const branch = amplifyApp.addBranch("main",{
         autoBuild:true,
-        stage: "dev",
         environmentVariables:{
             "TODOLIST_API_NAME":props.apiName,
             "TODOLIST_API_URL":props.apiEndpoint,
@@ -34,6 +33,7 @@ export class FrontendStack extends cdk.Stack {
             "WEB_CLIENT_ID":props.webClientId,
             "TODO_REGION":props.region
         }
-    })
+    });
+    branch.addEnvironment("STAGE","dev");
   }
 }
