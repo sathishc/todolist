@@ -15,7 +15,14 @@ export class TodolistPipelineStage extends cdk.Stage {
 
 
         const todoBackend = new BackendStack(this, 'TodolistService');
-        const todoFrontend = new FrontendStack(this, 'TodolistApp');
+        const todoFrontend = new FrontendStack(this, 'TodolistApp', {
+            apiName:todoBackend.apiName,
+            apiEndpoint:todoBackend.apiEndpoint,
+            userPoolId:todoBackend.userPoolId,
+            identityPoolId:todoBackend.identityPoolId,
+            webClientId:todoBackend.webClientId,
+            region:todoBackend.region
+        });
 
         this.apiName = todoBackend.apiName;
         this.apiEndpoint = todoBackend.apiEndpoint;
