@@ -25,6 +25,7 @@ export class FrontendStack extends cdk.Stack {
     }); 
     amplifyApp.addBranch("main",{
         autoBuild:true,
+        stage: "dev",
         environmentVariables:{
             "TODOLIST_API_NAME":props.apiName,
             "TODOLIST_API_URL":props.apiEndpoint,
