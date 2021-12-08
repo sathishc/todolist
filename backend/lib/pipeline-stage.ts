@@ -21,7 +21,8 @@ export class TodolistPipelineStage extends cdk.Stage {
             userPoolId:todoBackend.userPoolId,
             identityPoolId:todoBackend.identityPoolId,
             webClientId:todoBackend.webClientId,
-            region:todoBackend.region
+            region:todoBackend.region,
+            env:{ region: 'ap-south-1'}
         });
 
         this.apiName = todoBackend.apiName;
