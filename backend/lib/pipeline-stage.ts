@@ -13,8 +13,7 @@ export class TodolistPipelineStage extends cdk.Stage {
     constructor(scope: cdk.Construct, id: string, props?: cdk.Stage) {
         super(scope, id, props);
 
-
-        const todoBackend = new BackendStack(this, 'TodolistService',{env:{ region: 'ap-south-1'}});
+        const todoBackend = new BackendStack(this, 'TodolistService');
         const todoFrontend = new FrontendStack(this, 'TodolistApp', {
             apiName:todoBackend.apiName,
             apiEndpoint:todoBackend.apiEndpoint,
@@ -22,7 +21,6 @@ export class TodolistPipelineStage extends cdk.Stage {
             identityPoolId:todoBackend.identityPoolId,
             webClientId:todoBackend.webClientId,
             region:todoBackend.region,
-            env:{ region: 'ap-south-1'}
         });
 
         this.apiName = todoBackend.apiName;
